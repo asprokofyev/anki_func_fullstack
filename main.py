@@ -52,10 +52,6 @@ def show_all_words(words: dict[str, str]) -> None:
     """
     Выводит все пары 'слово - перевод' через точку с запятой в одну строку
     """
-    if not words:
-        print('Словарь пуст. Добавьте слова перед игрой.')
-        return
-
     print('; '.join(
         [f'{word} - {translation}' for word, translation in words.items()]
     ))
@@ -81,7 +77,7 @@ def add_words(words: dict[str, str]) -> None:
 def start_game(words: dict[str, str]) -> None:
     """
     Обычный режим игры: бесконечные вопросы
-    с подсчётом правильных ответов и времени.
+    с подсчетом правильных ответов и времени.
     """
     if not words:
         print('Словарь пуст. Добавьте слова перед игрой.')
@@ -89,14 +85,12 @@ def start_game(words: dict[str, str]) -> None:
 
     correct_count = 0
     total_time = 0.0
-    attempts = 0
 
     print('Чтобы закончить, введите СТОП')
 
     while True:
         word = random.choice(list(words.keys()))
         correct_translation = words[word]
-
         exit_flag, is_correct, answer_time = ask_and_check(
             word, correct_translation
         )
@@ -104,7 +98,6 @@ def start_game(words: dict[str, str]) -> None:
         if exit_flag:
             break
 
-        attempts += 1
         total_time += answer_time
 
         if is_correct:
@@ -117,16 +110,7 @@ def start_game(words: dict[str, str]) -> None:
             )
 
     print('Спасибо за игру!')
-
-    if attempts > 0:
-        avg_time = total_time / attempts
-        print(f'Ваш итоговый счёт: {correct_count}')
-        print(
-            f'Время игры: {total_time:.2f} секунд '
-            f'(среднее время: {avg_time:.2f} сек.)'
-        )
-    else:
-        print('Вы не ответили ни на один вопрос.')
+    print_statistics(correct_count, total_time)
 
 
 def ask_and_check(word: str, correct: str) -> Tuple[bool, bool, float]:
@@ -190,22 +174,27 @@ def train_until_mistake(words: dict[str, str]) -> None:
 
 def print_statistics(score: int, total_time: float) -> None:
     """
-    Выводит итоговый счёт, общее время и среднее время
+    Выводит итоговый счет, общее время и среднее время
     (или прочерк, если ответов не было).
     """
-    print(f'Ваш итоговый счёт: {score}')
-    print(f'Время игры: {total_time:.2f} секунд ')
-
+    print(f'Ваш итоговый счет: {score}')
     if score > 0:
-        print(f'(среднее время: {total_time / score:.2f} сек.)')
+        average_time = total_time / score
+        print(
+            f'Время игры: {total_time:.2f} секунд '
+            f'(среднее время: {average_time:.2f} сек.)'
+        )
     else:
-        print('(среднее время: —)')
+        print(f'Время игры: {total_time:.2f} секунд (среднее время: —)')
 
 
 def main() -> None:
     """Главное меню программы."""
     words = load_words()
-    print(f'Загружено {len(words)} слов.')
+    print(
+        f'Было загружено {len(words)} слов '
+        f'из файла {DEFAULT_DICTIONARY_FILENAME}'
+    )
 
     while True:
         print(MAIN_MENU)
