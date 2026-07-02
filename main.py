@@ -16,10 +16,10 @@ MAIN_MENU = '''Меню:
 
 
 def load_words(filename: str = DEFAULT_DICTIONARY_FILENAME) -> Dict[str, str]:
-    '''
-    Загружает пары "слово, перевод" из текстового файла и возвращает словарь.
+    """
+    Загружает пары 'слово, перевод' из текстового файла и возвращает словарь.
     Если файл не найден, выводит сообщение и завершает программу с кодом 1.
-    '''
+    """
     words_dictionary = {}
     try:
         with open(filename, 'r', encoding='utf-8') as file:
@@ -41,17 +41,17 @@ def save_words(
         words: dict[str, str],
         filename: str = DEFAULT_DICTIONARY_FILENAME
 ) -> None:
-    '''Сохраняет словарь в файл, перезаписывая его содержимое.'''
+    """Сохраняет словарь в файл, перезаписывая его содержимое."""
     with open(filename, 'w', encoding='utf-8') as file:
         for word, translation in words.items():
-            file.write(f"{word}, {translation}\n")
+            file.write(f'{word}, {translation}\n')
     print(f'Было сохранено {len(words)} слов в файл {filename}')
 
 
 def show_all_words(words: dict[str, str]) -> None:
-    '''
-    Выводит все пары "слово - перевод" через точку с запятой в одну строку
-    '''
+    """
+    Выводит все пары 'слово - перевод' через точку с запятой в одну строку
+    """
     if not words:
         print('Словарь пуст. Добавьте слова перед игрой.')
         return
@@ -62,16 +62,16 @@ def show_all_words(words: dict[str, str]) -> None:
 
 
 def add_words(words: dict[str, str]) -> None:
-    '''
+    """
     Добавляет новые пары в словарь в интерактивном режиме.
-    Для завершения введите "СТОП" при запросе слова или перевода.
-    '''
+    Для завершения введите 'СТОП' при запросе слова или перевода.
+    """
     while True:
-        word = input("Введите слово: ").strip()
+        word = input('Введите слово: ').strip()
         if word.upper() == STOP_WORD:
             break
 
-        translation = input("Введите перевод: ").strip()
+        translation = input('Введите перевод: ').strip()
         if translation.upper() == STOP_WORD:
             break
 
@@ -79,10 +79,10 @@ def add_words(words: dict[str, str]) -> None:
 
 
 def start_game(words: dict[str, str]) -> None:
-    '''
+    """
     Обычный режим игры: бесконечные вопросы
     с подсчётом правильных ответов и времени.
-    '''
+    """
     if not words:
         print('Словарь пуст. Добавьте слова перед игрой.')
         return
@@ -91,7 +91,7 @@ def start_game(words: dict[str, str]) -> None:
     total_time = 0.0
     attempts = 0
 
-    print("Чтобы закончить, введите СТОП")
+    print('Чтобы закончить, введите СТОП')
 
     while True:
         word = random.choice(list(words.keys()))
@@ -130,14 +130,14 @@ def start_game(words: dict[str, str]) -> None:
 
 
 def ask_and_check(word: str, correct: str) -> Tuple[bool, bool, float]:
-    '''
+    """
     Запрашивает перевод слова, замеряет время и возвращает:
     (exit_flag, is_correct, answer_time)
     exit_flag = True при вводе стоп-слова.
-    '''
+    """
     print(f'Ваше слово: {word}')
     start = time.time()
-    user_input = input("Ваш перевод: ").strip()
+    user_input = input('Ваш перевод: ').strip()
     end = time.time()
 
     if user_input.upper() == STOP_WORD:
@@ -147,10 +147,10 @@ def ask_and_check(word: str, correct: str) -> Tuple[bool, bool, float]:
 
 
 def train_until_mistake(words: dict[str, str]) -> None:
-    '''
-    Режим "до первой ошибки": игра завершается при первой ошибке или
+    """
+    Режим 'до первой ошибки': игра завершается при первой ошибке или
     по команде 'СТОП'.
-    '''
+    """
     if not words:
         print('Словарь пуст. Добавьте слова перед игрой.')
         return
@@ -189,10 +189,10 @@ def train_until_mistake(words: dict[str, str]) -> None:
 
 
 def print_statistics(score: int, total_time: float) -> None:
-    '''
+    """
     Выводит итоговый счёт, общее время и среднее время
     (или прочерк, если ответов не было).
-    '''
+    """
     print(f'Ваш итоговый счёт: {score}')
     print(f'Время игры: {total_time:.2f} секунд ')
 
@@ -203,7 +203,7 @@ def print_statistics(score: int, total_time: float) -> None:
 
 
 def main() -> None:
-    '''Главное меню программы.'''
+    """Главное меню программы."""
     words = load_words()
     print(f'Загружено {len(words)} слов.')
 
@@ -221,7 +221,7 @@ def main() -> None:
             show_all_words(words)
         elif menu_choice == '5':
             save_words(words)
-            print("До свидания!")
+            print('До свидания!')
             sys.exit()
         else:
             print('Неизвестный пункт меню. Пожалуйста, повторите ввод.')
